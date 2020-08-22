@@ -1,0 +1,117 @@
+//DESCRITIVA DE CADOS DE TESTE PARA AUTOMAÇÃO - PROJETO MANTIS (BASE 2 - DESAFIO)//
+//Por: Lorrany B. Amorim // https://mantis-prova.base2.com.br/ //
+
+1)Funcionalidade: Realizar login 
+  1.1)Estória: Eu como usuário quero realizar login no sistema. 
+  1.1.1)Cenário: Logar com usuário e senha corretos e incorretos.
+  1.1.1.1)BDD_01: Given que eu esteja na tela Login_page
+                  And insiro <USER> no campo "Username" 
+			      And <SENHA> no campo "Password"
+			      When clico em "Login"
+			      Then a tela informa <RESULTADO>
+			      |USER            |SENHA    |RESULTADO                                                                                                              |
+			      |lorrany.batista |a1234567 |a mensagem "Your account may be disable or blocked or the username/password you entered is incorrect." aparece na tela.| 
+			      |lorrany.amorim  |4        |a mensagem "Your account may be disable or blocked or the username/password you entered is incorrect." aparece na tela.|
+			      |lorrany.amorim  |a1234567 |o sistema abre my_view_page                                                                                            |
+			  
+  
+
+2)Funcionalidade: Recuperar senha 
+  2.1)Estória: Eu como usuário quero poder recuperar minha senha se eu esquece-la.
+  2.1.1)Cenário: Recuperar senha com e-mail válido e inválido.
+  2.1.1.1)BDD_01: Given que eu esteja na tela Login_page
+                  And clico em "Lost your password?"
+			      And insiro <USER> no campo "Username"
+			      And insiro <MAIL> no campo "E-mail"
+			      When clico no botão "Submit"
+			      Then a tela apresenta <RESULTADO> 
+			      |USER           |MAIL                           |RESULTADO                                                                                    |
+			      |lorranyteste   |lorranybatistaamorim@gmail.com |a mesagem "The provided information does not match any registered account!". Aparece na tela |
+			      |lorrany.amorim |lorrany.com.br                 |a mesagem "The provided information does not match any registered account!". Aparece na tela |
+                  |lorrany.amorim |lorranybatistaamorim@gmail     |a mensagem "Password Message Sent" aparece na tela.                                          |
+
+			  
+			  
+3)Funcionalidade: Criar issue 
+  3.1)Estória: Eu como usuário quero realizar a criação de um bug para ser corrigido.  
+  3.1.1)Cenário: Criar issue preenchendo todos os campos obrigatórios.
+  3.1.1.1)BDD_01: Given que esteja na tela My View do sistema
+                  And clico em "Report Issue"
+			      And seleciono o projeto no campo "Choose Project"
+			      And marco o checkbox "Make Default"
+			      And clico no botão "Select Project"
+			      When preencho os campos 
+			      |CAMPO       |INFORMAÇÃO                  |
+			      |Category    |[All Projects] app_14       |
+			      |Priority    |high                        |
+			      |Summary     |TESTE_2202                  |
+			      |Description |teste_lorrany_teste         |
+			      |View Status |private                     |
+			      |Report Stay |check to report more issues |
+			      And clico em "Submit Report"
+			      Then a mensagem "Operation successful" aparece na tela junto com o número da issue 
+ 
+  3.1.2)Cenário: Criar issue sem preenche um campo obrigatório
+  3.1.2.1)BDD_02: Given que esteja na tela My View do sistema
+                  And clico no botão "Select Project"
+			      When preencho os campos 
+			      |CAMPO       |INFORMAÇÃO                  |
+			      |Category    |[All Projects] Teste        |
+			      |Priority    |normal                      |
+			      |Description |descrição_teste_desafio     |
+			      And clico em "Submit Report"
+			      Then a mensagem "APPLICATION ERROR #11 A necessary field "Summary" was empty. Please recheck your inputs. Please use the "Back" button in your web browser to return to the previous page. There you can correct whatever problems were identified in this error or select another action. You can also click an option from the menu bar to go directly to a new section." aparece na tela.
+
+
+
+4)Funcionalidade: Validar criação da issue 
+  4.1)Estória: Eu como usuário quero verificar se minha issue foi criada conforme eu especifiquei.
+  4.1.1)Cenário: Validar a criação da issue
+  4.1.1.2)BDD_01: Given que eu esteja na tela de finalização da issue criada
+                  And clico em "View Submitted Issue XXXX"
+			      When os campos forem iguais a 
+			      |CAMPO       |INFORMAÇÃO                  |
+			      |Category    |[All Projects] app_14       |
+			      |Priority    |high                        |
+			      |Summary     |TESTE_2202                  |
+			      |Description |teste_lorrany_teste         |
+			      |View Status |private                     |
+			      |Report Stay |check to report more issues |
+			      Then issue foi criada corretamente 
+
+
+
+5)Funcionalidade: Buscar por uma issue
+  5.1)Estória: Eu como usuário quero localizar minhas issues por número. 
+  5.1.1)Cenário: Localizar issue com código válido e inválido
+  5.1.1.1)BDD_01: Given que eu esteja com o mantis acessivel e disponivel 
+                  And insiro <BUSCA> no campo "Issue #"
+			      When clico em "Jump"
+			      Then a tela apresenta <RESULTADO>
+			      |BUSCA   |RESULTADO                                                       |
+			      |4039    |A issue é mostrada na tela.                                     |
+                  |004038  |A issue é mostrada na tela.                                     |
+                  |Teste   |A mensagem "A number was expected for bug_id." aparece na tela. |
+ 
+ 
+ 
+6)Funcionalidade: Alterar uma issue 
+  6.1)Estória: Eu como usário quero adicionar informações e ou alterar dados na minha issue. 
+  6.1.1)Cenário: Buscar uma issue e adicionar uma TAG
+  6.1.1.1)BDD_01: Given que eu esteja com o mantis acessivel e disponivel 
+                  And insiro "4040" no campo "Issue #"
+			      And clico em "Jump"
+				  When seleciono uma "Ripchip" no campo "Attach Tags" 
+				  And clico no botão "Attach"
+				  Then um novo registro é adicionado no campo "Issue History"
+				 			  
+	6.1.2)Cenário: Buscar uma issue e adicionar uma Nota
+                  Given que eu esteja com o mantis acessivel e disponivel 
+                  And insiro "4038" no campo "Issue #"
+			      And clico em "Jump"	
+				  And insiro "Teste anotação" no campo "Note"
+				  And clico em "Add Note"
+				  Then um novo registro é adicionado no campo "Issue History"
+				  
+
+
